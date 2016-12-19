@@ -4,9 +4,11 @@ creep.harvester = require('creep.harvester');
 creep.upgrader = require('creep.upgrader');
 
 if (!Memory.count) { Memory.count = {} };
-if (!Memory.count.builder) { Memory.count.builder = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder').length };
-if (!Memory.count.harvester) { Memory.count.harvester = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester').length };
-if (!Memory.count.upgrader) { Memory.count.upgrader = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader').length };
+
+if (!Memory.count.creeps) { Memory.count.creeps = {} };
+if (!Memory.count.creeps.builder) { Memory.count.creeps.builder = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder').length };
+if (!Memory.count.creeps.harvester) { Memory.count.creeps.harvester = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester').length };
+if (!Memory.count.creeps.upgrader) { Memory.count.creeps.upgrader = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader').length };
 
 module.exports.loop = function () {
 	for (var name in Memory.creeps) {
@@ -14,26 +16,26 @@ module.exports.loop = function () {
 			var role = Memory.creeps[name].role;
 			console.log(role, 'expired:', name);
 			delete(Memory.creeps[name]);
-			Memory.count[role] -= 1;
+			Memory.count.creeps[role] -= 1;
 		}
 	}
 
 	for (var spawn in Game.spawns) {
-		if (Memory.count.upgrader < 1) {
+		if (Memory.count.creeps.upgrader < 1) {
 			Game.spawns[spawn].createCreep([WORK,CARRY,MOVE], undefined, {role: 'upgrader'});
-			Memory.count.upgrader += 1;
-		} else if (Memory.count.harvester < 2) {
+			Memory.count.creeps.upgrader += 1;
+		} else if (Memory.count.creeps.harvester < 2) {
 			Game.spawns[spawn].createCreep([WORK,CARRY,MOVE], undefined, {role: 'harvester'});
-			Memory.count.harvester += 1;
-		} else if (Memory.count.builder < 1) {
+			Memory.count.creeps.harvester += 1;
+		} else if (Memory.count.creeps.builder < 1) {
 			Game.spawns[spawn].createCreep([WORK,CARRY,MOVE], undefined, {role: 'builder'});
-			Memory.count.builder += 1;
-		} else if (Memory.count.upgrader < 2) {
+			Memory.count.creeps.builder += 1;
+		} else if (Memory.count.creeps.upgrader < 2) {
 			Game.spawns[spawn].createCreep([WORK,CARRY,MOVE], undefined, {role: 'upgrader'});
-			Memory.count.upgrader += 1;
-		} else if (Memory.count.builder < 3) {
+			Memory.count.creeps.upgrader += 1;
+		} else if (Memory.count.creeps.builder < 3) {
 			Game.spawns[spawn].createCreep([WORK,CARRY,MOVE], undefined, {role: 'builder'});
-			Memory.count.builder += 1;
+			Memory.count.creeps.builder += 1;
 		}
 	}
 
