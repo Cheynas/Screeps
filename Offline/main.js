@@ -18,6 +18,25 @@ module.exports.loop = function () {
 		}
 	}
 
+	for (var spawn in Game.spawns) {
+		if (Memory.count.upgrader < 1) {
+			Game.spawns[spawn].createCreep([WORK,CARRY,MOVE], undefined, {role: 'upgrader'});
+			Memory.count.upgrader += 1;
+		} else if (Memory.count.harvester < 2) {
+			Game.spawns[spawn].createCreep([WORK,CARRY,MOVE], undefined, {role: 'harvester'});
+			Memory.count.harvester += 1;
+		} else if (Memory.count.builder < 1) {
+			Game.spawns[spawn].createCreep([WORK,CARRY,MOVE], undefined, {role: 'builder'});
+			Memory.count.builder += 1;
+		} else if (Memory.count.upgrader < 2) {
+			Game.spawns[spawn].createCreep([WORK,CARRY,MOVE], undefined, {role: 'upgrader'});
+			Memory.count.upgrader += 1;
+		} else if (Memory.count.builder < 3) {
+			Game.spawns[spawn].createCreep([WORK,CARRY,MOVE], undefined, {role: 'builder'});
+			Memory.count.builder += 1;
+		}
+	}
+
 	for (var name in Game.creeps) {
 		var role = Memory.creeps[name].role;
 		creep[role].run(Game.creeps[name]);
