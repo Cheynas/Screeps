@@ -9,6 +9,10 @@
 
 var creep = require('_baseCreep');
 
+creep.role = 'harvester';
+creep.tiers[1] = [WORK,WORK,CARRY,MOVE]; /* 300 */
+creep.tiers[2] = [WORK,WORK,WORK,CARRY,MOVE,MOVE]; /* 450 */
+
 creep.run = function (creep) {
 	if (!creep.memory.gather && creep.carry.energy == 0) creep.memory.gather = true;
 	if (creep.memory.gather && creep.carry.energy == creep.carryCapacity) creep.memory.gather = false;

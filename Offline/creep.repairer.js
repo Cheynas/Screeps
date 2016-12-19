@@ -9,6 +9,10 @@
 
 var creep = require('_baseCreep');
 
+creep.role = 'repairer';
+creep.tiers[1] = [WORK,CARRY,CARRY,MOVE,MOVE]; /* 300 */
+creep.tiers[2] = [WORK,WORK,CARRY,CARRY,MOVE,MOVE]; /* 400 */
+
 creep.run = function (creep) {
 	if (!creep.memory.gather && creep.carry.energy == 0) creep.memory.gather = true;
 	if (creep.memory.gather && creep.carry.energy == creep.carryCapacity) creep.memory.gather = false;

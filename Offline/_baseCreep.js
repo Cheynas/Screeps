@@ -9,6 +9,23 @@
 
 var creep = {}
 
+creep.role = null;
+creep.tiers = [];
+creep.tiers[0] = [WORK,CARRY,MOVE]; /* 200 */
+
+creep.spawn = function (spawn) {
+	if (spawn.spawning) return ERR_BUSY;
+	if (spawn.room.energyAvailable < 200) return ERR_NOT_ENOUGH_ENERGY;
+
+	for (var i = 1; i < this.tiers.length; i++) {
+		if (spawn.canCreateCreep(this.tiers[i]) == OK) continue;
+		else break;
+	}
+	i -= 1;
+
+	return spawn.createCreep(this.tiers[i], undefined, {role: this.role, tier: i});
+}
+
 creep.cost = function(creep) {
 	var cost = 0;
 	var body = creep.body;
