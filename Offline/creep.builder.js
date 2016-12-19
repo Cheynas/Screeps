@@ -10,8 +10,8 @@
 var creep = require('_baseCreep');
 
 creep.run = function (creep) {
-	if (!creep.memory.gather && creep.carry.energy < creep.carryCapacity*0.5) creep.memory.gather = true;
-	if (creep.memory.gather && creep.carry.energy > creep.carryCapacity*0.5) creep.memory.gather = false;
+	if (!creep.memory.gather && creep.carry.energy == 0) creep.memory.gather = true;
+	if (creep.memory.gather && creep.carry.energy == creep.carryCapacity) creep.memory.gather = false;
 
 	if (creep.memory.gather) {
 		var source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
