@@ -24,7 +24,7 @@ creep.run = function (creep) {
 		if (!target) target = creep.room.controller;
 
 		if (target) {
-			if (target.pos.inRangeTo(target, 3)) return creep.build(target);
+			if (creep.pos.inRangeTo(target, 3)) return creep.build(target);
 			else return this.nav(creep,target);
 		}
 	}
