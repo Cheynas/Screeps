@@ -10,8 +10,7 @@
 var creep = {}
 
 creep.role = null;
-creep.tiers = [];
-creep.tiers[0] = [WORK,CARRY,MOVE]; /* 200 */
+creep.tiers = [[WORK,CARRY,MOVE]]; /* Lowest viable creep */
 
 creep.spawn = function (spawn) {
 	if (spawn.spawning) return ERR_BUSY;
