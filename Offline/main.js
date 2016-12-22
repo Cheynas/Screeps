@@ -40,6 +40,7 @@ module.exports.loop = function () {
 				var name = creep[role].spawn(Game.spawns[spawn]);
 				if (name) {
 					Memory.count.creeps[role] += 1;
+					console.log(role,'created:',name);
 					continue spawn;
 				}
 			}
@@ -50,6 +51,7 @@ module.exports.loop = function () {
 				var name = creep[role].spawn(Game.spawns[spawn]);
 				if (name) {
 					Memory.count.creeps[role] += 1;
+					console.log(role,'created:',name);
 					continue spawn;
 				}
 			}
