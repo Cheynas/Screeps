@@ -32,10 +32,13 @@ builder.run = function (creep) {
 		}
 	} else {
 		var target = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
-		if (!target) target = creep.room.controller;
 
 		if (target) {
 			if (creep.pos.inRangeTo(target, 3)) return creep.build(target);
+			else return this.nav(creep,target);
+		} else {
+			target = creep.room.controller;
+			if (creep.pos.inRangeTo(target,3)) return creep.upgradeController(target);
 			else return this.nav(creep,target);
 		}
 	}
