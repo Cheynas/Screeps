@@ -7,12 +7,12 @@
  * mod.thing == 'a thing'; // true
  */
 
-var creep = {}
+function Creep() {}
+Creep.prototype.role = null;
 
-creep.role = null;
-creep.tiers = [[WORK,CARRY,MOVE]]; /* Lowest viable creep */
+Creep.prototype.tiers = [[WORK,CARRY,MOVE]]; /* Lowest viable creep */
 
-creep.spawn = function (spawn) {
+Creep.prototype.spawn = function (spawn) {
 	if (spawn.spawning) return ERR_BUSY;
 	if (spawn.room.energyAvailable < 200) return ERR_NOT_ENOUGH_ENERGY;
 
@@ -25,7 +25,7 @@ creep.spawn = function (spawn) {
 	return spawn.createCreep(this.tiers[i], undefined, {role: this.role, tier: i});
 }
 
-creep.cost = function(creep) {
+Creep.prototype.cost = function(creep) {
 	var cost = 0;
 	var body = creep.body;
 	for (var i in body) {
@@ -34,7 +34,7 @@ creep.cost = function(creep) {
 	return cost;
 }
 
-creep.nav = function(creep, target) {
+Creep.prototype.nav = function(creep, target) {
 	if (creep.spawning) return ERR_BUSY;
 	if (target == null) return ERR_INVALID_TARGET;
 	if (creep.pos.isNearTo(target)) return OK;
@@ -42,8 +42,8 @@ creep.nav = function(creep, target) {
 	return creep.moveTo(target);
 }
 
-creep.run = function(creep) {
+Creep.prototype.run = function(creep) {
 	creep.say('ERROR!');
 }
 
-module.exports = creep;
+module.exports = Creep;

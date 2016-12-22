@@ -7,19 +7,20 @@
  * mod.thing == 'a thing'; // true
  */
 
-var creep = require('_baseCreep');
+var Creep = require('_baseCreep');
+var repairer = new Creep();
+repairer.role = 'repairer';
 
-creep.role = 'repairer';
-creep.tiers[1] = [WORK,CARRY,MOVE]; /* 200/300 */
-creep.tiers[2] = [WORK,WORK,CARRY,CARRY,MOVE,MOVE]; /* 400/550 */
-creep.tiers[3] = [WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE] /* 600/800 */
-creep.tiers[4] = [WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE] /* 800/1300 */
-creep.tiers[5] = [WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE] /* 1000/1800 */
-creep.tiers[6] = [WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE] /* 1200/2300 */
-creep.tiers[7] = [WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE] /* 1400/5600 */
-creep.tiers[8] = [WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE] /* 1600/12900 */
+repairer.tiers[1] = [WORK,CARRY,MOVE]; /* 200/300 */
+repairer.tiers[2] = [WORK,WORK,CARRY,CARRY,MOVE,MOVE]; /* 400/550 */
+repairer.tiers[3] = [WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE] /* 600/800 */
+repairer.tiers[4] = [WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE] /* 800/1300 */
+repairer.tiers[5] = [WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE] /* 1000/1800 */
+repairer.tiers[6] = [WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE] /* 1200/2300 */
+repairer.tiers[7] = [WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE] /* 1400/5600 */
+repairer.tiers[8] = [WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE] /* 1600/12900 */
 
-creep.run = function (creep) {
+repairer.run = function (creep) {
 	if (!creep.memory.gather && creep.carry.energy == 0) creep.memory.gather = true;
 	if (creep.memory.gather && creep.carry.energy == creep.carryCapacity) creep.memory.gather = false;
 
@@ -60,4 +61,4 @@ creep.run = function (creep) {
 	}
 }
 
-module.exports = creep;
+module.exports = repairer;
