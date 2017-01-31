@@ -40,6 +40,9 @@ harvester.run = function (creep) {
 		if (target) {
 			if (creep.pos.isNearTo(target)) return creep.transfer(target, RESOURCE_ENERGY);
 			else return this.nav(creep,target);
+		} else {
+		    var status = this.build(creep);
+		    if (status == ERR_NOT_FOUND) this.upgrade(creep);
 		}
 	}
 }

@@ -46,4 +46,65 @@ Creep.prototype.run = function(creep) {
 	creep.say('ERROR!');
 }
 
+Creep.prototype.gather = function(creep) {
+	var drop = creep.pos.findClosestByPath(FIND_DROPPED_ENERGY);
+	if (drop) {
+		if (creep.pos.isNearTo(drop)) return creep.pickup(drop);
+		else return this.nav(creep, drop);
+	}
+
+	var source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
+	if (source) {
+		if (creep.pos.isNearTo(source)) return creep.harvest(source);
+		else return this.nav(creep, source);
+	}
+}
+
+Creep.prototype.build = function(creep) {
+	if (_.size(Game.constructionSites) == 0) return ERR_NOT_FOUND;
+
+	var target = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
+	if (target) {
+		if (creep.pos.inRangeTo(target, 3)) return creep.build(target);
+		else return this.nav(creep, target);
+	}
+}
+
+Creep.prototype.repair = function(creep) {
+	var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {filter: (structure) => {
+		return structure.hits < 1000 && structure.hits < structure.hitsMax;
+	}});
+
+	if (!target) target = creep.pos.findClosestByPath(FIND_STRUCTURES, {filter: (structure) => {
+		return (
+			structure.structureType != STRUCTURE_WALL &&
+			structure.structureType != STRUCTURE_RAMPART &&
+			structure.structureType != STRUCTURE_ROAD
+			) && structure.hits < structure.hitsMax;
+	}});
+	if (!target) target = creep.pos.findClosestByPath(FIND_STRUCTURES, {filter: (structure) => {
+		return structure.structureType == STRUCTURE_RAMPART && structure.hits < structure.hitsMax;
+	}});
+	if (!target) target = creep.pos.findClosestByPath(FIND_STRUCTURES, {filter: (structure) => {
+		return structure.structureType == STRUCTURE_ROAD && structure.hits < structure.hitsMax;
+	}});
+	if (!target) target = creep.pos.findClosestByPath(FIND_STRUCTURES, {filter: (structure) => {
+		return structure.structureType == STRUCTURE_WALL && structure.hits < structure.hitsMax;
+	}});
+
+	if (target) {
+		if (creep.pos.inRangeTo(target, 3)) return creep.repair(target);
+		else return this.nav(creep,target);
+	} else {
+		return ERR_NOT_FOUND;
+	}
+}
+
+Creep.prototype.upgrade = function(creep) {
+	if (creep.room.controller.my) {
+		if (creep.pos.inRangeTo(creep.room.controller, 3)) return creep.upgradeController(creep.room.controller);
+		else return this.nav(creep, creep.room.controller);
+	}
+};
+
 module.exports = Creep;
