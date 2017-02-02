@@ -8,8 +8,7 @@
  */
 
 var Creep = require('_baseCreep');
-var upgrader = new Creep();
-upgrader.role = 'upgrader';
+var upgrader = new Creep('upgrader');
 
 upgrader.tiers[1] = [WORK,WORK,CARRY,MOVE]; /* 300/300 */
 upgrader.tiers[2] = [WORK,WORK,WORK,WORK,CARRY,MOVE,MOVE]; /* 550/550 */

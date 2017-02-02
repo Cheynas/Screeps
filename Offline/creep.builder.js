@@ -8,8 +8,7 @@
  */
 
 var Creep = require('_baseCreep');
-var builder = new Creep();
-builder.role = 'builder';
+var builder = new Creep('builder');
 
 builder.tiers[1] = [WORK,CARRY,MOVE,MOVE]; /* 250/300 */
 builder.tiers[2] = [WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE,MOVE]; /* 550/550 */

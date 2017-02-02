@@ -7,8 +7,7 @@
  * mod.thing == 'a thing'; // true
  */
 
-function Creep() {}
-Creep.prototype.role = null;
+function Creep(role) { this.role = role; }
 
 Creep.prototype.tiers = [[WORK,CARRY,MOVE]]; /* Lowest viable creep */
 

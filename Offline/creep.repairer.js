@@ -8,8 +8,7 @@
  */
 
 var Creep = require('_baseCreep');
-var repairer = new Creep();
-repairer.role = 'repairer';
+var repairer = new Creep('repairer');
 
 repairer.tiers[1] = [WORK,CARRY,MOVE]; /* 200/300 */
 repairer.tiers[2] = [WORK,WORK,CARRY,CARRY,MOVE,MOVE]; /* 400/550 */

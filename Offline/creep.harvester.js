@@ -8,8 +8,7 @@
  */
 
 var Creep = require('_baseCreep');
-var harvester = new Creep();
-harvester.role = 'harvester';
+var harvester = new Creep('harvester');
 
 harvester.tiers[1] = [WORK,WORK,CARRY,MOVE]; /* 300/300 */
 harvester.tiers[2] = [WORK,WORK,WORK,WORK,CARRY,MOVE,MOVE]; /* 550/550 */
