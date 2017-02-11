@@ -1,4 +1,5 @@
 var creep = {};
+creep.hauler = require('creep.hauler');
 creep.builder = require('creep.builder');
 creep.repairer = require('creep.repairer');
 creep.harvester = require('creep.harvester');
@@ -8,6 +9,7 @@ if (!Memory.custom) { Memory.custom = {}; }
 
 if (!Memory.custom.count) { Memory.custom.count = {}; }
 if (!Memory.custom.count.creeps) { Memory.custom.count.creeps = {}; }
+if (!Memory.custom.count.creeps.hauler) { Memory.custom.count.creeps.hauler = _.filter(Game.creeps, (creep) => creep.memory.role == 'hauler').length; }
 if (!Memory.custom.count.creeps.builder) { Memory.custom.count.creeps.builder = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder').length; }
 if (!Memory.custom.count.creeps.repairer) { Memory.custom.count.creeps.repairer = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer').length; }
 if (!Memory.custom.count.creeps.harvester) { Memory.custom.count.creeps.harvester = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester').length; }
@@ -15,6 +17,7 @@ if (!Memory.custom.count.creeps.upgrader) { Memory.custom.count.creeps.upgrader 
 
 if (!Memory.custom.limit) { Memory.custom.limit = {} };
 if (!Memory.custom.limit.creeps) { Memory.custom.limit.creeps = {}; }
+if (!Memory.custom.limit.creeps.hauler) { Memory.custom.limit.creeps.hauler = 2; }
 if (!Memory.custom.limit.creeps.builder) { Memory.custom.limit.creeps.builder = 2; }
 if (!Memory.custom.limit.creeps.repairer) { Memory.custom.limit.creeps.repairer = 2; }
 if (!Memory.custom.limit.creeps.harvester) { Memory.custom.limit.creeps.harvester = 2; }

@@ -52,6 +52,17 @@ Creep.prototype.gather = function(creep) {
 		else return this.nav(creep, drop);
 	}
 
+	var container = creep.pos.findClosestByPath(FIND_STRUCTURES, {filter: (structure) => {
+		return (
+			structure.structureType == STRUCTURE_CONTAINER ||
+			structure.structureType == STRUCTURE_STORAGE
+			) && structure.store[RESOURCE_ENERGY] > 0;
+	}});
+	if (container) {
+		if (creep.pos.isNearTo(container)) return creep.withdraw(container, RESOURCE_ENERGY);
+		else return this.nav(creep, container);
+	}
+
 	var source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
 	if (source) {
 		if (creep.pos.isNearTo(source)) return creep.harvest(source);
@@ -105,5 +116,23 @@ Creep.prototype.upgrade = function(creep) {
 		else return this.nav(creep, creep.room.controller);
 	}
 };
+
+Creep.prototype.haul = function(creep) {
+	var target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {filter: (structure) => {
+		return structure.structureType == STRUCTURE_TOWER && structure.energy < structure.energyCapacity;
+	}})
+
+	if (!target) target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {filter: (structure) => {
+		return (
+			structure.structureType == STRUCTURE_EXTENSION ||
+			structure.structureType == STRUCTURE_SPAWN
+		) && structure.energy < structure.energyCapacity;
+	}});
+
+	if (target) {
+		if (creep.pos.isNearTo(target)) return creep.transfer(target, RESOURCE_ENERGY);
+		else return this.nav(creep,target);
+	} else return ERR_NOT_FOUND;
+}
 
 module.exports = Creep;
