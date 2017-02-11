@@ -133,4 +133,26 @@ Creep.prototype.haul = function(creep) {
 	} else return ERR_NOT_FOUND;
 }
 
+Creep.prototype.harvest = function(creep) {
+	if (_.sum(creep.carry)) {
+		var container = creep.pos.findInRange(FIND_STRUCTURES, 1, {filter: (structure) => {
+			return (
+				structure.structureType == STRUCTURE_CONTAINER ||
+				structure.structureType == STRUCTURE_STORAGE
+				) && (_.sum(structure.store) < structure.storeCapacity);
+		}});
+		if (container.length) creep.transfer(container[0], RESOURCE_ENERGY);
+	}
+
+	if (_.sum(creep.carry) == creep.carryCapacity) return ERR_FULL;
+
+	var target = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
+	if (!target) target creep.pos.findClosestByPath(FIND_SOURCES);
+
+	if (target) {
+		if (creep.pos.isNearTo(target)) return creep.harvest(target);
+		else return this.nav(creep, target);
+	} else return ERR_NOT_FOUND;
+};
+
 module.exports = Creep;

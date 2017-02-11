@@ -17,11 +17,11 @@ if (!Memory.custom.count.creeps.upgrader) { Memory.custom.count.creeps.upgrader 
 
 if (!Memory.custom.limit) { Memory.custom.limit = {} };
 if (!Memory.custom.limit.creeps) { Memory.custom.limit.creeps = {}; }
-if (!Memory.custom.limit.creeps.hauler) { Memory.custom.limit.creeps.hauler = 2; }
-if (!Memory.custom.limit.creeps.builder) { Memory.custom.limit.creeps.builder = 2; }
-if (!Memory.custom.limit.creeps.repairer) { Memory.custom.limit.creeps.repairer = 2; }
-if (!Memory.custom.limit.creeps.harvester) { Memory.custom.limit.creeps.harvester = 2; }
-if (!Memory.custom.limit.creeps.upgrader) { Memory.custom.limit.creeps.upgrader = 2; }
+if (!Memory.custom.limit.creeps.hauler) { Memory.custom.limit.creeps.hauler = 4; }
+if (!Memory.custom.limit.creeps.builder) { Memory.custom.limit.creeps.builder = 1; }
+if (!Memory.custom.limit.creeps.repairer) { Memory.custom.limit.creeps.repairer = 3; }
+if (!Memory.custom.limit.creeps.harvester) { Memory.custom.limit.creeps.harvester = 1; }
+if (!Memory.custom.limit.creeps.upgrader) { Memory.custom.limit.creeps.upgrader = 1; }
 
 
 module.exports.loop = function () {
