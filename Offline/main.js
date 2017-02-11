@@ -1,24 +1,25 @@
 var creep = {};
-creep.upgrader = require('creep.upgrader');
-creep.harvester = require('creep.harvester');
 creep.builder = require('creep.builder');
 creep.repairer = require('creep.repairer');
+creep.harvester = require('creep.harvester');
+creep.upgrader = require('creep.upgrader');
 
-if (!Memory.count) { Memory.count = {}; }
+if (!Memory.custom) { Memory.custom = {}; }
 
-if (!Memory.count.creeps) { Memory.count.creeps = {}; }
-if (!Memory.count.creeps.harvester) { Memory.count.creeps.harvester = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester').length; }
-if (!Memory.count.creeps.upgrader) { Memory.count.creeps.upgrader = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader').length; }
-if (!Memory.count.creeps.builder) { Memory.count.creeps.builder = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder').length; }
-if (!Memory.count.creeps.repairer) { Memory.count.creeps.repairer = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer').length; }
+if (!Memory.custom.count) { Memory.custom.count = {}; }
+if (!Memory.custom.count.creeps) { Memory.custom.count.creeps = {}; }
+if (!Memory.custom.count.creeps.builder) { Memory.custom.count.creeps.builder = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder').length; }
+if (!Memory.custom.count.creeps.repairer) { Memory.custom.count.creeps.repairer = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer').length; }
+if (!Memory.custom.count.creeps.harvester) { Memory.custom.count.creeps.harvester = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester').length; }
+if (!Memory.custom.count.creeps.upgrader) { Memory.custom.count.creeps.upgrader = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader').length; }
 
-if (!Memory.limit) { Memory.limit = {} };
+if (!Memory.custom.limit) { Memory.custom.limit = {} };
+if (!Memory.custom.limit.creeps) { Memory.custom.limit.creeps = {}; }
+if (!Memory.custom.limit.creeps.builder) { Memory.custom.limit.creeps.builder = 2; }
+if (!Memory.custom.limit.creeps.repairer) { Memory.custom.limit.creeps.repairer = 2; }
+if (!Memory.custom.limit.creeps.harvester) { Memory.custom.limit.creeps.harvester = 2; }
+if (!Memory.custom.limit.creeps.upgrader) { Memory.custom.limit.creeps.upgrader = 2; }
 
-if (!Memory.limit.creeps) { Memory.limit.creeps = {}; }
-if (!Memory.limit.creeps.harvester) { Memory.limit.creeps.harvester = 2; }
-if (!Memory.limit.creeps.upgrader) { Memory.limit.creeps.upgrader = 2; }
-if (!Memory.limit.creeps.builder) { Memory.limit.creeps.builder = 2; }
-if (!Memory.limit.creeps.repairer) { Memory.limit.creeps.repairer = 2; }
 
 module.exports.loop = function () {
 	for (var name in Memory.creeps) {
@@ -26,7 +27,7 @@ module.exports.loop = function () {
 			var role = Memory.creeps[name].role;
 			console.log(role, 'expired:', name);
 			delete(Memory.creeps[name]);
-			Memory.count.creeps[role] -= 1;
+			Memory.custom.count.creeps[role] -= 1;
 		}
 	}
 
@@ -35,22 +36,22 @@ module.exports.loop = function () {
 		if (Game.spawns[spawn].spawning) continue;
 		if (Game.spawns[spawn].room.energyAvailable < 200) continue;
 
-		for (var role in Memory.count.creeps) {
-			if (Memory.count.creeps[role] < 1) {
+		for (var role in Memory.custom.count.creeps) {
+			if (Memory.custom.count.creeps[role] < 1) {
 				var name = creep[role].spawn(Game.spawns[spawn]);
 				if (name) {
-					Memory.count.creeps[role] += 1;
+					Memory.custom.count.creeps[role] += 1;
 					console.log(role,'created:',name);
 					continue spawn;
 				}
 			}
 		}
 
-		for (var role in Memory.count.creeps) {
-			if (Memory.count.creeps[role] < Memory.limit.creeps[role]) {
+		for (var role in Memory.custom.count.creeps) {
+			if (Memory.custom.count.creeps[role] < Memory.custom.limit.creeps[role]) {
 				var name = creep[role].spawn(Game.spawns[spawn]);
 				if (name) {
-					Memory.count.creeps[role] += 1;
+					Memory.custom.count.creeps[role] += 1;
 					console.log(role,'created:',name);
 					continue spawn;
 				}
