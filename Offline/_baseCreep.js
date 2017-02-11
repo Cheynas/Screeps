@@ -67,7 +67,7 @@ Creep.prototype.gather = function(creep) {
 	if (source) {
 		if (creep.pos.isNearTo(source)) return creep.harvest(source);
 		else return this.nav(creep, source);
-	}
+	} else return ERR_NOT_FOUND;
 }
 
 Creep.prototype.build = function(creep) {
@@ -77,7 +77,7 @@ Creep.prototype.build = function(creep) {
 	if (target) {
 		if (creep.pos.inRangeTo(target, 3)) return creep.build(target);
 		else return this.nav(creep, target);
-	}
+	} else return ERR_NOT_FOUND;
 }
 
 Creep.prototype.repair = function(creep) {
@@ -105,16 +105,14 @@ Creep.prototype.repair = function(creep) {
 	if (target) {
 		if (creep.pos.inRangeTo(target, 3)) return creep.repair(target);
 		else return this.nav(creep,target);
-	} else {
-		return ERR_NOT_FOUND;
-	}
+	} else return ERR_NOT_FOUND;
 }
 
 Creep.prototype.upgrade = function(creep) {
 	if (creep.room.controller.my) {
 		if (creep.pos.inRangeTo(creep.room.controller, 3)) return creep.upgradeController(creep.room.controller);
 		else return this.nav(creep, creep.room.controller);
-	}
+	} else return ERR_NOT_FOUND;
 };
 
 Creep.prototype.haul = function(creep) {

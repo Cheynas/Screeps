@@ -24,13 +24,18 @@ repairer.run = function (creep) {
 	if (creep.memory.gather && creep.carry.energy == creep.carryCapacity) creep.memory.gather = false;
 
 	if (creep.memory.gather) {
-		this.gather(creep);
+		return this.gather(creep);
 	} else {
 		var status = this.repair(creep);
+
 		if (status == ERR_NOT_FOUND)
 			status = this.build(creep);
+		if (status == ERR_NOT_FOUND)
+			status = this.haul(creep);
 
-		if (status == ERR_NOT_FOUND) this.upgrade(creep);
+		if (status == ERR_NOT_FOUND)
+			status = this.upgrade(creep);
+		return status;
 	}
 }
 

@@ -24,9 +24,9 @@ upgrader.run = function (creep) {
 	if (creep.memory.gather && creep.carry.energy == creep.carryCapacity) creep.memory.gather = false;
 
 	if (creep.memory.gather) {
-		this.gather(creep);
+		return this.gather(creep);
 	} else {
-		this.upgrade(creep);
+		return this.upgrade(creep);
 	}
 }
 
