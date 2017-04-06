@@ -62,6 +62,44 @@ module.exports.loop = function () {
 		}
 	}
 
+	for (var ID in Game.structures) {
+		var tower = Game.structures[ID];
+		if (tower.structureType != STRUCTURE_TOWER) continue;
+
+		var target = tower.pos.findInRange(FIND_MY_CREEPS, 5, {filter: function(creep) {
+			return creep.hits < creep.hitsMax;
+		}});
+
+		if (target[0]) { tower.heal(target[0]); continue; }
+		else target = tower.pos.findInRange(FIND_STRUCTURES, 5, {filter: function(struct) {
+			return struct.hits < struct.hitsMax && struct.hits < 1500;
+		}});
+		if (target[0]) { tower.repair(target[0]); continue; }
+		else target = tower.pos.findInRange(FIND_STRUCTURES, 5, {filter: function(struct) {
+			return struct.hits < struct.hitsMax;
+		}});
+		if (target[0]) { tower.repair(target[0]); continue; }
+		else target = tower.pos.findInRange(FIND_HOSTILE_CREEPS, 5);
+		if (target) { tower.attack(target[0]); continue; }
+
+		if (tower.energy < tower.energyCapacity/2) continue;
+
+		var target = tower.pos.findClosestByRange(FIND_MY_CREEPS, {filter: function(creep) {
+			return creep.hits < creep.hitsMax;
+		}});
+		if (target[0]) { tower.heal(target[0]); continue; }
+		else target = tower.pos.findClosestByRange(FIND_STRUCTURES, {filter: function(struct) {
+			return struct.hits < struct.hitsMax && struct.hits < 1500;
+		}});
+		if (target[0]) { tower.repair(target[0]); continue; }
+		else target = tower.pos.findClosestByRange(FIND_STRUCTURES, {filter: function(struct) {
+			return struct.hits < struct.hitsMax;
+		}});
+		if (target[0]) { tower.repair(target[0]); continue; }
+		else target = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+		if (target) { tower.attack(target[0]); continue }
+	}
+ 
 	for (var name in Game.creeps) {
 		var role = Memory.creeps[name].role;
 		creep[role].run(Game.creeps[name]);
