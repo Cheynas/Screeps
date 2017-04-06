@@ -22,7 +22,7 @@ harvester.tiers[4] = [WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,MOVE,MOVE,MO
 harvester.run = function (creep) {
 	var status = this.harvest(creep);
 	if (status == ERR_FULL)
-		creep.say('Full');
+		status = this.haul(creep);
 
 	return status;
 }

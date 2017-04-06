@@ -38,7 +38,7 @@ Creep.prototype.nav = function(creep, target) {
 	if (target == null) return ERR_INVALID_TARGET;
 	if (creep.pos.isNearTo(target)) return OK;
 
-	return creep.moveTo(target);
+	return creep.moveTo(target, {visualizePathStyle: {}});
 }
 
 Creep.prototype.run = function(creep) {
@@ -52,9 +52,11 @@ Creep.prototype.gather = function(creep) {
 		else return this.nav(creep, drop);
 	}
 
+	if (creep.carry.energy > creep.carryCapacity/2) creep.memory.gather = false;
 	var container = creep.pos.findClosestByPath(FIND_STRUCTURES, {filter: (structure) => {
 		return (
 			structure.structureType == STRUCTURE_CONTAINER ||
+			structure.structureType == STRUCTURE_LINK ||
 			structure.structureType == STRUCTURE_STORAGE
 			) && structure.store[RESOURCE_ENERGY] > 0;
 	}});
@@ -123,6 +125,7 @@ Creep.prototype.haul = function(creep) {
 	if (!target) target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {filter: (structure) => {
 		return (
 			structure.structureType == STRUCTURE_EXTENSION ||
+			structure.structureType == STRUCTURE_TOWER ||
 			structure.structureType == STRUCTURE_SPAWN
 		) && structure.energy < structure.energyCapacity;
 	}});
@@ -138,6 +141,7 @@ Creep.prototype.harvest = function(creep) {
 		var container = creep.pos.findInRange(FIND_STRUCTURES, 1, {filter: (structure) => {
 			return (
 				structure.structureType == STRUCTURE_CONTAINER ||
+				structure.structureType == STRUCTURE_LINK ||
 				structure.structureType == STRUCTURE_STORAGE
 				) && (_.sum(structure.store) < structure.storeCapacity);
 		}});
