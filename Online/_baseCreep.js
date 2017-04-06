@@ -55,10 +55,13 @@ Creep.prototype.gather = function(creep) {
 	if (creep.carry.energy > creep.carryCapacity/2) creep.memory.gather = false;
 	var container = creep.pos.findClosestByPath(FIND_STRUCTURES, {filter: (structure) => {
 		return (
-			structure.structureType == STRUCTURE_CONTAINER ||
-			structure.structureType == STRUCTURE_LINK ||
+			structure.structureType == STRUCTURE_LINK &&
+			structure.energy > 0
+		) || (
+			(structure.structureType == STRUCTURE_CONTAINER ||
 			structure.structureType == STRUCTURE_STORAGE
-			) && structure.store[RESOURCE_ENERGY] > 0;
+			) && structure.store[RESOURCE_ENERGY] > 0
+		);
 	}});
 	if (container) {
 		if (creep.pos.isNearTo(container)) return creep.withdraw(container, RESOURCE_ENERGY);
@@ -140,10 +143,13 @@ Creep.prototype.harvest = function(creep) {
 	if (_.sum(creep.carry)) {
 		var container = creep.pos.findInRange(FIND_STRUCTURES, 1, {filter: (structure) => {
 			return (
-				structure.structureType == STRUCTURE_CONTAINER ||
-				structure.structureType == STRUCTURE_LINK ||
+				structure.structureType == STRUCTURE_LINK &&
+				structure.energy < structure.energyCapacity
+			) || (
+				(structure.structureType == STRUCTURE_CONTAINER ||
 				structure.structureType == STRUCTURE_STORAGE
-				) && (_.sum(structure.store) < structure.storeCapacity);
+				) && (_.sum(structure.store) < structure.storeCapacity)
+			);
 		}});
 		if (container.length) creep.transfer(container[0], RESOURCE_ENERGY);
 	}
@@ -151,7 +157,7 @@ Creep.prototype.harvest = function(creep) {
 	if (_.sum(creep.carry) == creep.carryCapacity) return ERR_FULL;
 
 	var target = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
-	if (!target) target creep.pos.findClosestByPath(FIND_SOURCES);
+	if (!target) target = creep.pos.findClosestByPath(FIND_SOURCES);
 
 	if (target) {
 		if (creep.pos.isNearTo(target)) return creep.harvest(target);
