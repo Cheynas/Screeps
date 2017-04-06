@@ -8,8 +8,7 @@
  */
 
 var Creep = require('_baseCreep');
-var repairer = new Creep();
-repairer.role = 'repairer';
+var repairer = new Creep('repairer');
 
 repairer.tiers[1] = [WORK,CARRY,MOVE]; /* 200/300 */
 repairer.tiers[2] = [WORK,WORK,CARRY,CARRY,MOVE,MOVE]; /* 400/550 */
@@ -25,39 +24,18 @@ repairer.run = function (creep) {
 	if (creep.memory.gather && creep.carry.energy == creep.carryCapacity) creep.memory.gather = false;
 
 	if (creep.memory.gather) {
-		var source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
-		if (source) {
-			if (creep.pos.isNearTo(source)) return creep.harvest(source);
-			else return this.nav(creep,source);
-		}
+		return this.gather(creep);
 	} else {
-		var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {filter: (structure) => {
-			return structure.hits < 1000;
-		}});
-		if (!target) target = creep.pos.findClosestByPath(FIND_STRUCTURES, {filter: (structure) => {
-			return (
-				structure.structureType != STRUCTURE_WALL &&
-				structure.structureType != STRUCTURE_RAMPART &&
-				structure.structureType != STRUCTURE_ROAD
-				) && structure.hits < structure.hitsMax;
-		}});
-		if (!target) target = creep.pos.findClosestByPath(FIND_STRUCTURES, {filter: (structure) => {
-			return structure.structureType == STRUCTURE_RAMPART && structure.hits < structure.hitsMax;
-		}})
-		if (!target) target = creep.pos.findClosestByPath(FIND_STRUCTURES, {filter: (structure) => {
-			return structure.structureType == STRUCTURE_ROAD && structure.hits < structure.hitsMax;
-		}})
-		if (!target) target = creep.pos.findClosestByPath(FIND_STRUCTURES, {filter: (structure) => {
-			return structure.structureType == STRUCTURE_WALL && structure.hits < structure.hitsMax;
-		}})
+		var status = this.repair(creep);
 
-		if (target) {
-			if (creep.pos.inRangeTo(target, 3)) return creep.repair(target);
-			else return this.nav(creep,target);
-		} else {
-			var target = creep.pos.findClosestByPath(FIND_MY_SPAWNS);
-			if (!creep.pos.inRangeTo(target, 3)) return this.nav(creep,target);
-		}
+		if (status == ERR_NOT_FOUND)
+			status = this.build(creep);
+		if (status == ERR_NOT_FOUND)
+			status = this.haul(creep);
+
+		if (status == ERR_NOT_FOUND)
+			status = this.upgrade(creep);
+		return status;
 	}
 }
 

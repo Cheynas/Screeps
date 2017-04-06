@@ -8,8 +8,7 @@
  */
 
 var Creep = require('_baseCreep');
-var harvester = new Creep();
-harvester.role = 'harvester';
+var harvester = new Creep('harvester');
 
 harvester.tiers[1] = [WORK,WORK,CARRY,MOVE]; /* 300/300 */
 harvester.tiers[2] = [WORK,WORK,WORK,WORK,CARRY,MOVE,MOVE]; /* 550/550 */
@@ -21,27 +20,11 @@ harvester.tiers[4] = [WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,MOVE,MOVE,MO
 /*        tiers[8] = 12900 */
 
 harvester.run = function (creep) {
-	if (!creep.memory.gather && creep.carry.energy == 0) creep.memory.gather = true;
-	if (creep.memory.gather && creep.carry.energy == creep.carryCapacity) creep.memory.gather = false;
+	var status = this.harvest(creep);
+	if (status == ERR_FULL)
+		status = this.haul(creep);
 
-	if (creep.memory.gather) {
-		var source = creep.pos.findClosestByPath(FIND_SOURCES);
-		if (creep.pos.isNearTo(source)) return creep.harvest(source);
-		else return this.nav(creep,source);
-	} else {
-		var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {filter: (structure) => {
-			return (
-				structure.structureType == STRUCTURE_EXTENSION ||
-				structure.structureType == STRUCTURE_SPAWN ||
-				structure.structureType == STRUCTURE_TOWER
-			) && structure.energy < structure.energyCapacity;
-		}});
-
-		if (target) {
-			if (creep.pos.isNearTo(target)) return creep.transfer(target, RESOURCE_ENERGY);
-			else return this.nav(creep,target);
-		}
-	}
+	return status;
 }
 
 module.exports = harvester;

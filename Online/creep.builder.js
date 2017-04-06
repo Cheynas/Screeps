@@ -8,8 +8,7 @@
  */
 
 var Creep = require('_baseCreep');
-var builder = new Creep();
-builder.role = 'builder';
+var builder = new Creep('builder');
 
 builder.tiers[1] = [WORK,CARRY,MOVE,MOVE]; /* 250/300 */
 builder.tiers[2] = [WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE,MOVE]; /* 550/550 */
@@ -25,22 +24,18 @@ builder.run = function (creep) {
 	if (creep.memory.gather && creep.carry.energy == creep.carryCapacity) creep.memory.gather = false;
 
 	if (creep.memory.gather) {
-		var source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
-		if (source) {
-			if (creep.pos.isNearTo(source)) return creep.harvest(source);
-			else return this.nav(creep,source);
-		}
+		return this.gather(creep);
 	} else {
-		var target = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
+		var status = this.build(creep);
 
-		if (target) {
-			if (creep.pos.inRangeTo(target, 3)) return creep.build(target);
-			else return this.nav(creep,target);
-		} else {
-			target = creep.room.controller;
-			if (creep.pos.inRangeTo(target,3)) return creep.upgradeController(target);
-			else return this.nav(creep,target);
-		}
+		if (status == ERR_NOT_FOUND)
+			status = this.repair(creep);
+		if (status == ERR_NOT_FOUND)
+			status = this.haul(creep);
+
+		if (status == ERR_NOT_FOUND)
+			status = this.upgrade(creep);
+		return status;
 	}
 }
 
