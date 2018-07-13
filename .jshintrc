@@ -1,0 +1,4 @@
+{
+	"-W086": true, // allow fall-through
+	"esversion": 6
+}
